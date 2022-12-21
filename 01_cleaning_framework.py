@@ -6,7 +6,7 @@
 import pandas as pd
 import numpy as np
 
-# Reading in raw csv files
+# Reading in raw csv files from datasets_raw
 
 # Melting data in the correct format (every dimension and value in a column)
 
