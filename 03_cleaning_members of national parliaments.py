@@ -105,6 +105,7 @@ print(clean_df3.info())
 print(clean_df3.describe())
 # 3. Further individual cleaning
 # Avoided changing DType of "% of Parliaments" from string to float by passing in the 'decimal' in pd.read_csv
+clean_df3['% of Parliaments'].astype(float)
 
 # 4. Any questions regarding cleaning decisions to discuss?
 # From which year on should we agree to display the data (2009/2010?)

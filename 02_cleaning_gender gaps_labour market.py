@@ -111,7 +111,7 @@ clean_df.drop(columns=['Flag'], axis=1, inplace=True)
 # Therefore removing all rows with Country "NaN"
 # Now, there are no null values in the df anymore
 print(clean_df.info())
-clean_df2 = clean_df[clean_df['Country'].notna()]
+clean_df2 = clean_df[clean_df['Country'].notna()].copy()
 print(clean_df2.info())
 
 # 2.2 Compare if each country has the same number of rows
@@ -133,7 +133,10 @@ print(clean_df2.describe())
 print(clean_df2.head())
 
 # 3. Further individual cleaning
-    # -
+# Calculate percentage values
+clean_df2['% of Total Employment'].astype(float)
+clean_df2['% of Total Employment'] = clean_df2['% of Total Employment'].div(100).round(2)
+print(clean_df2.head())
 
 # 4. Any questions regarding cleaning decisions to discuss?
 # Get Only sex of Total, Male and Female ?
