@@ -44,9 +44,10 @@ print((raw_df['_POSITION'].unique()))
 # _POSITION =  'MEMB_PARL'
 clean_df = raw_df.loc[  (raw_df['_EGROUP'] == 'PARL_ALL') & 
                         (raw_df['UNIT'] == 'Percent of total') &
-                        (raw_df['_POSITION'] == 'MEMB_PARL')
+                        (raw_df['_POSITION'] == 'MEMB_PARL') &
+                        (raw_df['sex'] == 'Women')
                         ].copy()
-clean_df.drop(columns=['_EGROUP','UNIT','_POSITION'], axis=1, inplace=True)
+clean_df.drop(columns=['_EGROUP','UNIT','_POSITION', 'sex'], axis=1, inplace=True)
 print(clean_df.head())
 
 # Filtering only first Quarter of every year
@@ -65,11 +66,11 @@ clean_df2.loc[:,'_geo'] = new_country_column
 print((clean_df2.head()))
 
 # renaming columns
-clean_df2.rename(columns={"time": "Year", "_geo" : "Country", "value": "% of Parliaments", "sex": "Sex"}, inplace=True)
+clean_df2.rename(columns={"time": "Year", "_geo" : "Country", "value": "Female parliament members in %"}, inplace=True)
 print((clean_df2.head()))
 
 # reorder columns
-clean_df2 = clean_df2[['Country', 'Year', 'Sex', '% of Parliaments']]
+clean_df2 = clean_df2[['Country', 'Year', 'Female parliament members in %']]
 print((clean_df2.head()))
 
 # 2. Data Cleaning Step 2 (handle null values, not valid rows etc.)
@@ -104,8 +105,9 @@ clean_df3.drop(clean_df3[(clean_df3['Year'] < 2007)].index, inplace=True)
 print(clean_df3.info())
 print(clean_df3.describe())
 # 3. Further individual cleaning
-# Avoided changing DType of "% of Parliaments" from string to float by passing in the 'decimal' in pd.read_csv
-clean_df3['% of Parliaments'].astype(float)
+clean_df3['Female parliament members in %'].astype(float)
+clean_df3['Female parliament members in %'] = clean_df3['Female parliament members in %'].div(100).round(2)
+print(clean_df3)
 
 # 4. Any questions regarding cleaning decisions to discuss?
 # From which year on should we agree to display the data (2009/2010?)
