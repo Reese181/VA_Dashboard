@@ -164,18 +164,18 @@ mal_df.drop(columns=['Sex'], axis=1, inplace=True)
 tot_df.drop(columns=['Sex'], axis=1, inplace=True)
 
 # Calculate the employment gap between man and woman
-fem_df['Employment Gap in %'] = mal_df['Total Employment in %'].sub(fem_df['Total Employment in %'])
-fem_df['Employment Gap in %'].round(2)
+fem_df['Employment Gap in %'] = mal_df['Total Employment in %'].sub(fem_df['Total Employment in %']).round(2)
+
 # Add the total number of employed persons for each row
 fem_df['Employed Persons in Thousands'] = fem_df.index.map(tot_df['Total Employment in %'])
-fem_df['Employed Persons in Thousands'].astype('int')
+fem_df['Employed Persons in Thousands'] = fem_df['Employed Persons in Thousands'].astype(int)
 
 # Drop unnecessary columns
+#print(fem_df[fem_df['Employment Gap in %'] == 0.0])
 fem_df.drop(columns=['Total Employment in %'], axis=1, inplace=True)
 
 # Reset index after finishing mathematical operations
 fem_df.reset_index(inplace=True)
-
 print(fem_df.head())
 # 5. Save cleaned dataframe in folder datasets_cleaned 
 fem_df.to_csv('./datasets_cleaned/Employment by sex and age.csv')
