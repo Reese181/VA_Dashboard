@@ -68,8 +68,8 @@ print((raw_df['OBS_FLAG'].unique()))
 # indic_em = EMP_LFS
 # unit = PC_POP
 # Drop columns after filtering
-clean_df = raw_df.loc[(raw_df['indic_em'] == 'EMP_LFS') & (raw_df['unit'] == 'PC_POP')].copy()
-clean_df.drop(columns=['indic_em','unit'], axis=1, inplace=True)
+clean_df = raw_df.loc[(raw_df['indic_em'] == 'EMP_LFS')].copy()
+clean_df.drop(columns=['indic_em'], axis=1, inplace=True)
 print(clean_df.head())
 
 # 1.3 Rename country column with help of the EU27.csv in additional data
@@ -88,7 +88,7 @@ clean_df.rename(columns={"sex": "Sex", "age" : "Age", "geo": "Country", "TIME_PE
 print((clean_df.head()))
 
 # reorder columns
-clean_df = clean_df[['Country', 'Year', 'Sex', 'Age', 'Flag', 'Total Employment in %']]
+clean_df = clean_df[['Country', 'Year', 'Sex', 'Age', 'Flag', 'Total Employment in %','unit']]
 print((clean_df.head()))
 
 # Flags
@@ -134,30 +134,47 @@ print(clean_df2.head())
 
 # 3. Further individual cleaning
 # Calculate percentage values
-clean_df2['Total Employment in %'].astype(float)
-clean_df2['Total Employment in %'] = clean_df2['Total Employment in %'].div(100).round(2)
-print(clean_df2.head())
+# Create one df with percentage values
+# Create another df with total values --> clean_df4
+clean_df3 = clean_df2.loc[(clean_df2['unit'] == 'PC_POP')].copy()
+clean_df4 = clean_df2.loc[(clean_df2['unit'] == 'THS_PER')].copy()
+clean_df3.drop(columns=['unit'], axis=1, inplace=True)
+clean_df4.drop(columns=['unit'], axis=1, inplace=True)
+
+clean_df3['Total Employment in %'].astype(float)
+clean_df3['Total Employment in %'] = clean_df2['Total Employment in %'].div(100).round(2)
+#print(clean_df3.head())
 
 # 4. Any questions regarding cleaning decisions to discuss?
 # Get Only sex of Total, Male and Female ?
 # Get only one age group or multiple age groups ?
 
-clean_df2.set_index(['Country', 'Year','Age'], inplace=True)
-fem_df = clean_df2[clean_df2['Sex'] == 'F'].copy()
-mal_df = clean_df2[clean_df2['Sex'] == 'M'].copy()
-tot_df = clean_df2[clean_df2['Sex'] == 'T'].copy()
+# Setting index to perform mathematical operations
+clean_df3.set_index(['Country', 'Year','Age'], inplace=True)
+clean_df4.set_index(['Country', 'Year','Age'], inplace=True)
 
+# Split datasets into the Genders
+fem_df = clean_df3[clean_df3['Sex'] == 'F'].copy()
+mal_df = clean_df3[clean_df3['Sex'] == 'M'].copy()
+tot_df = clean_df4[clean_df4['Sex'] == 'T'].copy()
+
+# Column is not needed anymore
 fem_df.drop(columns=['Sex'], axis=1, inplace=True)
 mal_df.drop(columns=['Sex'], axis=1, inplace=True)
 tot_df.drop(columns=['Sex'], axis=1, inplace=True)
 
-#print(fem_df)
-print(fem_df['Total Employment in %'].sub(mal_df['Total Employment in %']))
+# Calculate the employment gap between man and woman
+fem_df['Employment Gap in %'] = mal_df['Total Employment in %'].sub(fem_df['Total Employment in %'])
 
-#print(tot_df[tot_df['Country'] == 'Austria'])
+# Add the total number of employed persons for each row
+fem_df['Employed Persons in Thousands'] = fem_df.index.map(tot_df['Total Employment in %'])
 
+# Drop unnecessary columns
+fem_df.drop(columns=['Total Employment in %'], axis=1, inplace=True)
 
+# Reset index after finishing mathematical operations
+fem_df.reset_index(inplace=True)
 
+print(fem_df.head())
 # 5. Save cleaned dataframe in folder datasets_cleaned 
-clean_df2.to_csv('./datasets_cleaned/Employment by sex and age.csv')
-
+fem_df.to_csv('./datasets_cleaned/Employment by sex and age.csv')
