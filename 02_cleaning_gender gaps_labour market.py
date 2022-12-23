@@ -141,7 +141,7 @@ clean_df4 = clean_df2.loc[(clean_df2['unit'] == 'THS_PER')].copy()
 clean_df3.drop(columns=['unit'], axis=1, inplace=True)
 clean_df4.drop(columns=['unit'], axis=1, inplace=True)
 
-clean_df3['Total Employment in %'].astype(float)
+clean_df3['Total Employment in %'].astype('float')
 clean_df3['Total Employment in %'] = clean_df2['Total Employment in %'].div(100).round(2)
 #print(clean_df3.head())
 
@@ -165,9 +165,10 @@ tot_df.drop(columns=['Sex'], axis=1, inplace=True)
 
 # Calculate the employment gap between man and woman
 fem_df['Employment Gap in %'] = mal_df['Total Employment in %'].sub(fem_df['Total Employment in %'])
-
+fem_df['Employment Gap in %'].round(2)
 # Add the total number of employed persons for each row
 fem_df['Employed Persons in Thousands'] = fem_df.index.map(tot_df['Total Employment in %'])
+fem_df['Employed Persons in Thousands'].astype('int')
 
 # Drop unnecessary columns
 fem_df.drop(columns=['Total Employment in %'], axis=1, inplace=True)
