@@ -84,11 +84,11 @@ clean_df.loc[:,'geo'] = new_country_column
 print((clean_df.head()))
 
 # renaming columns
-clean_df.rename(columns={"sex": "Sex", "age" : "Age", "geo": "Country", "TIME_PERIOD": "Year", "OBS_VALUE": "% of Total Employment", "OBS_FLAG" : "Flag"}, inplace=True)
+clean_df.rename(columns={"sex": "Sex", "age" : "Age", "geo": "Country", "TIME_PERIOD": "Year", "OBS_VALUE": "Total Employment in %", "OBS_FLAG" : "Flag"}, inplace=True)
 print((clean_df.head()))
 
 # reorder columns
-clean_df = clean_df[['Country', 'Year', 'Sex', 'Age', 'Flag', '% of Total Employment']]
+clean_df = clean_df[['Country', 'Year', 'Sex', 'Age', 'Flag', 'Total Employment in %']]
 print((clean_df.head()))
 
 # Flags
@@ -134,13 +134,29 @@ print(clean_df2.head())
 
 # 3. Further individual cleaning
 # Calculate percentage values
-clean_df2['% of Total Employment'].astype(float)
-clean_df2['% of Total Employment'] = clean_df2['% of Total Employment'].div(100).round(2)
+clean_df2['Total Employment in %'].astype(float)
+clean_df2['Total Employment in %'] = clean_df2['Total Employment in %'].div(100).round(2)
 print(clean_df2.head())
 
 # 4. Any questions regarding cleaning decisions to discuss?
 # Get Only sex of Total, Male and Female ?
 # Get only one age group or multiple age groups ?
+
+clean_df2.set_index(['Country', 'Year','Age'], inplace=True)
+fem_df = clean_df2[clean_df2['Sex'] == 'F'].copy()
+mal_df = clean_df2[clean_df2['Sex'] == 'M'].copy()
+tot_df = clean_df2[clean_df2['Sex'] == 'T'].copy()
+
+fem_df.drop(columns=['Sex'], axis=1, inplace=True)
+mal_df.drop(columns=['Sex'], axis=1, inplace=True)
+tot_df.drop(columns=['Sex'], axis=1, inplace=True)
+
+#print(fem_df)
+print(fem_df['Total Employment in %'].sub(mal_df['Total Employment in %']))
+
+#print(tot_df[tot_df['Country'] == 'Austria'])
+
+
 
 # 5. Save cleaned dataframe in folder datasets_cleaned 
 clean_df2.to_csv('./datasets_cleaned/Employment by sex and age.csv')
