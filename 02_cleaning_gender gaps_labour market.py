@@ -181,9 +181,9 @@ print(fem_df.head())
 # Calculating index: (Actual value - worst value)/(Best value - worst value)
 # Taking the max. employment gap from age group 15-64 since this is the age group where we are taking the index to calculate the overall index
 best_value = 0
-worst_value = fem_df[fem_df['Age'] == 'Y15-64']['Employment Gap in %'].max()
-
+worst_value = 1
 fem_df['IndexValueEmployment'] = (fem_df['Employment Gap in %']-worst_value)/(best_value-worst_value)
-print(fem_df.head())
+#print(fem_df[fem_df['Age'] == 'Y15-64']['IndexValueEmployment'].max())
+
 # 5. Save cleaned dataframe in folder datasets_cleaned 
 fem_df.to_csv('./datasets_cleaned/Employment by sex and age.csv')

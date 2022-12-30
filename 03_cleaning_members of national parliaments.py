@@ -109,9 +109,13 @@ clean_df3['Female parliament members in %'].astype(float)
 clean_df3['Female parliament members in %'] = clean_df3['Female parliament members in %'].div(100).round(2)
 print(clean_df3)
 
-# 4. Any questions regarding cleaning decisions to discuss?
-# From which year on should we agree to display the data (2009/2010?)
-# How do we name Sex (f/m/t - Women, Men, Total etc.)
+# Calculating index: (Actual value - worst value)/(Best value - worst value)
+# Taking the minimal value for female parliament members
+best_value = 0.50
+worst_value = 0
+
+clean_df3['IndexValueDecisionMakers'] = (clean_df3['Female parliament members in %']-worst_value)/(best_value-worst_value)
+print(clean_df3['IndexValueDecisionMakers'].max())
 
 # 5. Save cleaned dataframe in folder datasets_cleaned -- GIVE A UNIQUE NAME!
 clean_df3.to_csv('./datasets_cleaned/Members of national parliaments.csv')
