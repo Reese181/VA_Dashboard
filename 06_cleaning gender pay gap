@@ -1,11 +1,8 @@
 # Import packages
 import pandas as pd
 
-'' Had to use Spyder and run outside VS code as pandas etc aren't available (I gave up)'''
 # Reading in raw csv files from datasets_raw
-df = pd.read_csv(r'C:\Users\User\Desktop\CBS\Visual Analytics\Exam\gender pay gap\earn_gr_gpgr2__custom_4009964_linear.csv')
-
-# Melting data in the correct format (every dimension and value in a column)
+df = pd.read_csv('./datasets_raw/Gender pay gap raw.csv')
 
 # 1. Data Cleaning Step 1
 # 1.1 Identify and delete columns that are not necessary for further process
@@ -188,8 +185,8 @@ final_df = filling_zeros_df[['average % pay gap', 'Index']]
 
 print(final_df)
 
-final_df.to_csv('06 Gender Pay Gap.csv')
-final_df.to_excel('06 Gender Pay Gap.xlsx')
+final_df.to_csv('./datasets_cleaned/Gender Pay Gap 2009-2020')
+#final_df.to_excel('Gender Pay Gap 2009-2020.xlsx')
 
 
 # 2.2 Compare if each country has the same number of rows

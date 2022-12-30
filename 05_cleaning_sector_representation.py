@@ -1,10 +1,8 @@
 # Import packages
 import pandas as pd
 
-''' Had to use Spyder and run outside VS code as pandas etc aren't available (I gave up)'''
 # Reading in raw csv files from datasets_raw
-df = pd.read_csv(r'C:\Users\User\Desktop\CBS\Visual Analytics\Exam\Economic sector\lfsq_epgais__custom_4004302_linear.csv')
-#df = pd.read_csv('Economic_sector_gender_representation.csv')
+df = pd.read_csv('./datasets_raw/Economic_sector_gender_representation_2013_2022.csv')
 
 # Melting data in the correct format (every dimension and value in a column)
 
@@ -185,7 +183,7 @@ p_country = p_country.drop((['percent','sum', 'count']), axis=1)
 clean_df = p_country.droplevel(('Sector'), axis=1)
 
 # Since the goal is equal gender representation, the female/male gap is calculated as the distance from 50% in either direction
-# The gap is the absolute value of 50% - Female percentage:
+# The gap is the absolute value of (50% - Female percentage):
 clean_df['Gap'] = abs(0.5 - clean_df['Average female percentage'])
 
 # Calculating index: (Actual value - worst value)/(Best value - worst value)
@@ -214,6 +212,5 @@ control_df = final_df.pivot_table(final_df, index=['Year'], columns=['Country'])
 print(control_df)
 
 
-
-#final_df.to_csv('Economic sector representation 2013-2022.csv')
+final_df.to_csv('./datasets_cleaned/Economic sector representation 2013-2022')
 #final_df.to_excel('Economic sector representation 2013-2022.xlsx')

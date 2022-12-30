@@ -1,10 +1,8 @@
 # Import packages
 import pandas as pd
 
-'' Had to use Spyder and run outside VS code as pandas etc aren't available (I gave up)'''
-
 # Reading in raw csv files from datasets_raw
-df = pd.read_csv(r'C:\Users\User\Desktop\CBS\Visual Analytics\Exam\Pension Gap\ilc_pnp13__custom_4016755_linear.csv')
+df = pd.read_csv('./datasets_raw/Pension gap raw.csv')
 geo_names = {
 'BE' :'Belgium',
 'BG' :'Bulgaria',
@@ -167,5 +165,5 @@ print(control.count())
 
 
 # Saving output
-#final_df.to_csv('Pension gap 2012-2021.csv')
+final_df.to_csv('./datasets_cleaned/Pension gap 2012-2021')
 #final_df.to_excel('Pension gap 2012-2021.xlsx')
