@@ -185,7 +185,7 @@ final_df = filling_zeros_df[['average % pay gap', 'Index']]
 
 print(final_df)
 
-final_df.to_csv('./datasets_cleaned/Gender Pay Gap 2009-2020')
+final_df.to_csv('./datasets_cleaned/Gender Pay Gap 2009-2020.csv')
 #final_df.to_excel('Gender Pay Gap 2009-2020.xlsx')
 
 
