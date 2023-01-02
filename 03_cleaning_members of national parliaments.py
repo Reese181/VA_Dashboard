@@ -117,6 +117,11 @@ worst_value = 0
 clean_df3['IndexValueDecisionMakers'] = (clean_df3['Female parliament members in %']-worst_value)/(best_value-worst_value)
 print(clean_df3['IndexValueDecisionMakers'].max())
 
+# Drop European Union Stats
+i = clean_df3[(clean_df3['Country'] == 'European Union')]
+clean_df3.drop(i.index, inplace=True)
+print(clean_df3['Country'].unique())
+
 # 5. Save cleaned dataframe in folder datasets_cleaned -- GIVE A UNIQUE NAME!
 clean_df3.to_csv('./datasets_cleaned/Members of national parliaments.csv')
 

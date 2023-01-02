@@ -185,5 +185,9 @@ worst_value = 1
 fem_df['IndexValueEmployment'] = (fem_df['Employment Gap in %']-worst_value)/(best_value-worst_value)
 #print(fem_df[fem_df['Age'] == 'Y15-64']['IndexValueEmployment'].max())
 
+# Drop European Union Stats
+i = fem_df[(fem_df['Country'] == 'European Union')]
+fem_df.drop(i.index, inplace=True)
+
 # 5. Save cleaned dataframe in folder datasets_cleaned 
 fem_df.to_csv('./datasets_cleaned/Employment by sex and age.csv')
