@@ -156,6 +156,9 @@ p_sector = p_sector.to_frame()
 print(sector_percentage)
 print(p_sector)
 
+# Creating a dataframe for the visualtization per sector 
+sector_overview = p_sector
+
 # reshaping to sector as columns to calculate average percentage over all sectors
 p_country = p_sector.pivot_table(p_sector, index=['Year','Country'], columns=['Sector'])
 print(p_country.describe())
@@ -214,3 +217,15 @@ print(control_df)
 
 final_df.to_csv('./datasets_cleaned/Economic sector representation 2013-2022.csv')
 #final_df.to_excel('Economic sector representation 2013-2022.xlsx')
+
+print(sector_overview)
+
+# Reshaping and replacing all sectors with missing values with zero to maintain
+# equal numbers of rows/columns
+sector_overview = sector_overview.pivot_table(sector_overview, index=['Country','Year'], columns=['Sector'])
+sector_overview = sector_overview.drop(['2022','2021'], level='Year')
+sector_overview = sector_overview.fillna(0)
+sector_overview = sector_overview.stack()
+print(sector_overview)
+sector_overview.to_csv('./ESR all sectors 2013-2020.csv')
+#sector_overview.to_excel('ESR all sectors 2013-2020.xlsx')
